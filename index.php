@@ -59,7 +59,7 @@ a{
     box-shadow: 0 3px 12px rgba(0,0,0,0.15);
 	padding:10px 10px;
 	min-height:60px;
-	min-width:240px;
+	min-width:260px;
 	display:none;
 }
 .close-button {
@@ -70,6 +70,7 @@ a{
     overflow: hidden;
     width: 16px;
     display: inline-block;
+	margin-left:10px;
 }
 .close-button a {
     text-decoration: none;
@@ -100,8 +101,38 @@ textarea{
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="jquery.caretposition.js"></script>
 <h2>Planetbiru Editor</h2>
-<textarea id="textarea" rows="3" style="" spellcheck="false">Username saya adalah @Kamshory. Silakan folow @Kamshory. Atau Anda juga bisa ketik #Kamshory. @Kamshory @masroy @roy @mas @planetbiru.</textarea>
+<textarea name="textarea" rows="3" id="textarea" style="" spellcheck="false">Username saya adalah @Kamshory. Silakan follow @Kamshory. Atau Anda juga bisa ketik #Kamshory. @Kamshory @masroy @roy @mas @planetbiru. 
+Kunjungi profil saya di http://www.planetbiru.com/kamshory</textarea>
 <script type="text/javascript">
+function getFirstEmail(email) {
+	try{
+		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if(re.test(email))
+		{
+			return email;
+		}
+		else
+		{
+			return "";
+		}
+	}
+	catch(e)
+	{
+		return "";
+	}
+	return "";
+}
+function getFirstURL(string) {
+	try{
+		var pattern = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+		var match = string.match(pattern);
+		return match[0];
+	}
+	catch(e){
+		return "";
+	}
+	return "";
+}
 function getTagInfo(tag)
 {
 	if(tag == '#') return '';
@@ -141,6 +172,8 @@ $(function() {
 	var tip = $('.dropdown-menu');
 	$(document).on('keyup click focus', '#textarea', function(e) {
 		var info = $(this).getControlStatus();
+		var firstEmail = getFirstEmail(info.selectedWord);
+		var firstURL = getFirstURL(info.selectedWord);
 		if(info.selectedWord.charAt(0) == '@' || info.selectedWord.charAt(0) == '#' )
 		{
 			var pos = $(this).getCaretPosition();
@@ -150,7 +183,6 @@ $(function() {
 				{
 					var content = getInfo(info.selectedWord);
 					tip.find('.info-content').html(content.html);
-					lastSelectedWord = info.selectedWord;
 					
 					$.get(content.url, {keyword:content.keyword}, function(answer){
 						$(content.selector).empty().append(answer);
@@ -168,12 +200,47 @@ $(function() {
 				tip.hide();
 			}
 		}
+		else if(firstEmail.length > 0)
+		{
+			if(lastSelectedWord != info.selectedWord)
+			{
+				var pos = $(this).getCaretPosition();
+				var linkURL = info.selectedWord;
+				if(info.selectedWord.indexOf('://') == -1)
+				{
+					var linkURL = 'mailto:'+info.selectedWord;
+				}
+				tip.find('.info-content').html('Send mail to <a href="'+linkURL+'">'+info.selectedWord+'</a>');
+				tip.css({
+					left: this.offsetLeft + pos.left - 18,
+					top: this.offsetTop + pos.top + 22
+				}).show();
+			}
+		}
+		else if(firstURL.length > 0)
+		{
+			if(lastSelectedWord != info.selectedWord)
+			{
+				var pos = $(this).getCaretPosition();
+				var linkURL = info.selectedWord;
+				if(info.selectedWord.indexOf('://') == -1)
+				{
+					var linkURL = 'http://'+info.selectedWord;
+				}
+				tip.find('.info-content').html('Preview URL <a href="'+linkURL+'" target="_blank">'+info.selectedWord+'</a>');
+				tip.css({
+					left: this.offsetLeft + pos.left - 18,
+					top: this.offsetTop + pos.top + 22
+				}).show();
+			}
+		}
 		else
 		{
 			tip.hide();
 		}
-		$('#status').text(JSON.stringify(info));
+		lastSelectedWord = info.selectedWord;
 		locked = false;
+		$('#status').text(JSON.stringify(info));
 	})
 	$(document).on('blur', '#textarea', function(e){
 		if(!locked)
