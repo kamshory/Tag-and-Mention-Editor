@@ -1,4 +1,4 @@
 <?php
 $tag = htmlspecialchars(@$_GET['keyword']);
-echo "This is detail of <a href=\"hashtag.php\" target=\"_blank\">#$tag</a>";
+echo "This is detail of <a href=\"hashtag/$tag\" target=\"_blank\">#$tag</a>";
 ?>

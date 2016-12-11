@@ -258,10 +258,10 @@ $(function() {
 });
 </script>
 
-<ul class="dropdown-menu dropdown-menu-sw">
+<div class="dropdown-menu dropdown-menu-sw">
 	<span class="close-button"><a href="#" class="close-tip">×</a></span>
 	<div class="info-content"></div>
-</ul>
+</div>
       
 <div id="status">&nbsp;</div>
 
