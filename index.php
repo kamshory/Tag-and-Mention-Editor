@@ -101,8 +101,8 @@ textarea{
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="jquery.caretposition.js"></script>
 <h2>Planetbiru Editor</h2>
-<textarea name="textarea" rows="3" id="textarea" style="" spellcheck="false">Username saya adalah @Kamshory. Silakan follow @Kamshory. Atau Anda juga bisa ketik #Kamshory. @Kamshory @masroy @roy @mas @planetbiru. 
-Kunjungi profil saya di http://www.planetbiru.com/kamshory</textarea>
+<textarea name="textarea" rows="3" id="textarea" style="" spellcheck="false">Username saya adalah @Kamshory. Silakan follow @Kamshory. Atau Anda juga bisa ketik #Kamshory atau #MasRoy. @Kamshory @masroy @roy @mas @planetbiru. 
+Kunjungi profil saya di http://www.planetbiru.com/kamshory kamshory@kamshory.com </textarea>
 <script type="text/javascript">
 function getFirstEmail(email) {
 	try{
@@ -204,31 +204,33 @@ $(function() {
 		{
 			if(lastSelectedWord != info.selectedWord)
 			{
-				var pos = $(this).getCaretPosition();
-				var linkURL = 'mailto:'+info.selectedWord;
-				tip.find('.info-content').html('Send mail to <a href="'+linkURL+'">'+info.selectedWord+'</a>');
-				tip.css({
-					left: this.offsetLeft + pos.left - 18,
-					top: this.offsetTop + pos.top + 22
-				}).show();
+				lastSelectedWord = info.selectedWord;
 			}
+			var pos = $(this).getCaretPosition();
+			var linkURL = 'mailto:'+info.selectedWord;
+			tip.find('.info-content').html('Send mail to <a href="'+linkURL+'">'+info.selectedWord+'</a>');
+			tip.css({
+				left: this.offsetLeft + pos.left - 18,
+				top: this.offsetTop + pos.top + 22
+			}).show();
 		}
 		else if(firstURL.length > 0)
 		{
 			if(lastSelectedWord != info.selectedWord)
 			{
-				var pos = $(this).getCaretPosition();
-				var linkURL = info.selectedWord;
-				if(info.selectedWord.indexOf('://') == -1)
-				{
-					linkURL = 'http://'+info.selectedWord;
-				}
-				tip.find('.info-content').html('Open URL <a href="'+linkURL+'" target="_blank">'+info.selectedWord+'</a>');
-				tip.css({
-					left: this.offsetLeft + pos.left - 18,
-					top: this.offsetTop + pos.top + 22
-				}).show();
+				lastSelectedWord = info.selectedWord;
 			}
+			var pos = $(this).getCaretPosition();
+			var linkURL = info.selectedWord;
+			if(info.selectedWord.indexOf('://') == -1)
+			{
+				linkURL = 'http://'+info.selectedWord;
+			}
+			tip.find('.info-content').html('Open URL <a href="'+linkURL+'" target="_blank">'+info.selectedWord+'</a>');
+			tip.css({
+				left: this.offsetLeft + pos.left - 18,
+				top: this.offsetTop + pos.top + 22
+			}).show();
 		}
 		else
 		{
