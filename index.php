@@ -205,11 +205,7 @@ $(function() {
 			if(lastSelectedWord != info.selectedWord)
 			{
 				var pos = $(this).getCaretPosition();
-				var linkURL = info.selectedWord;
-				if(info.selectedWord.indexOf('://') == -1)
-				{
-					var linkURL = 'mailto:'+info.selectedWord;
-				}
+				var linkURL = 'mailto:'+info.selectedWord;
 				tip.find('.info-content').html('Send mail to <a href="'+linkURL+'">'+info.selectedWord+'</a>');
 				tip.css({
 					left: this.offsetLeft + pos.left - 18,
@@ -225,7 +221,7 @@ $(function() {
 				var linkURL = info.selectedWord;
 				if(info.selectedWord.indexOf('://') == -1)
 				{
-					var linkURL = 'http://'+info.selectedWord;
+					linkURL = 'http://'+info.selectedWord;
 				}
 				tip.find('.info-content').html('Open URL <a href="'+linkURL+'" target="_blank">'+info.selectedWord+'</a>');
 				tip.css({
