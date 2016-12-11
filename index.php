@@ -227,7 +227,7 @@ $(function() {
 				{
 					var linkURL = 'http://'+info.selectedWord;
 				}
-				tip.find('.info-content').html('Preview URL <a href="'+linkURL+'" target="_blank">'+info.selectedWord+'</a>');
+				tip.find('.info-content').html('Open URL <a href="'+linkURL+'" target="_blank">'+info.selectedWord+'</a>');
 				tip.css({
 					left: this.offsetLeft + pos.left - 18,
 					top: this.offsetTop + pos.top + 22
